@@ -1,0 +1,47 @@
+
+###
+POST http://localhost:8080/api/pessoas
+Content-Type: application/json
+
+{
+  "nome": "Ana Maria",
+  "email": "teste@teste.com",
+  "cidade": "Goiania",
+  "idade": 56
+}
+
+###
+GET http://localhost:8080/api/pessoas
+Content-Type: application/json
+
+###
+GET http://localhost:8080/api/testes
+Content-Type: application/json
+
+###
+PUT http://localhost:8080/api/pessoas/1
+Content-Type: application/json
+
+{
+  "id": 5,
+  "nome": "João",
+  "email": "teste@teste.com",
+  "cidade": "Rio de Janeiro",
+  "idade": 25
+}
+
+###
+PATCH http://localhost:8080/api/pessoas/6
+Content-Type: application/json
+
+{
+  "id": 6,
+  "nome": "Santa",
+  "email": "teste@teste.com",
+  "idade": 100
+
+}
+
+###
+DELETE http://localhost:8080/api/pessoas/1
+Content-Type: application/json
