@@ -1,7 +1,6 @@
 package com.br.apispringbbootjava.configuracao;
 
 import com.br.apispringbbootjava.model.PessoaModel;
-import com.br.apispringbbootjava.repository.PessoaRepository;
 import com.br.apispringbbootjava.service.PessoaService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -100,22 +99,7 @@ public class Inicializador implements CommandLineRunner {
         pessoa15.setIdade(31);
         pessoa15.setCidade("Belém");
 
-        // Efetuar cadastros
-        pessoaService.cadastrarPessoa(pessoa1);
-        pessoaService.cadastrarPessoa(pessoa2);
-        pessoaService.cadastrarPessoa(pessoa3);
-        pessoaService.cadastrarPessoa(pessoa4);
-        pessoaService.cadastrarPessoa(pessoa5);
-        pessoaService.cadastrarPessoa(pessoa6);
-        pessoaService.cadastrarPessoa(pessoa7);
-        pessoaService.cadastrarPessoa(pessoa8);
-        pessoaService.cadastrarPessoa(pessoa9);
-        pessoaService.cadastrarPessoa(pessoa10);
-        pessoaService.cadastrarPessoa(pessoa11);
-        pessoaService.cadastrarPessoa(pessoa12);
-        pessoaService.cadastrarPessoa(pessoa13);
-        pessoaService.cadastrarPessoa(pessoa14);
-        pessoaService.cadastrarPessoa(pessoa15);
+     
 
 
     }

@@ -1,11 +1,15 @@
 package com.br.apispringbbootjava.service;
 
+import com.br.apispringbbootjava.dto.PessoaModeloDTO;
 import com.br.apispringbbootjava.model.PessoaModel;
 import com.br.apispringbbootjava.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Service
 public class PessoaService {
@@ -13,26 +17,44 @@ public class PessoaService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    public PessoaModel cadastrarPessoa(PessoaModel pessoaModel) {
-        return pessoaRepository.save(pessoaModel);
+    public ResponseEntity<PessoaModel> cadastrarPessoa(PessoaModel pessoaModel) {
+        PessoaModel salvo = pessoaRepository.save(pessoaModel);
+        return new ResponseEntity<>(salvo, HttpStatus.CREATED);
+    }
+    // Método responsável pela listagem de pessoas
+    public ResponseEntity<Iterable<PessoaModeloDTO>> buscarTodasPessoas() {
+          // Busca todas as pessoas do banco de dados usando o repositório
+        Iterable<PessoaModel> pessoas = pessoaRepository.findAll();
+         // Converte cada PessoaModelo em um PessoaModeloDTO
+        Iterable<PessoaModeloDTO> pessoasDTO = StreamSupport.stream(pessoas.spliterator(), false)
+        .map(p -> new PessoaModeloDTO(p.getNome(), p.getIdade(), p.getEmail(), p.getCidade()))
+        .toList(); // Converte o resultado em uma lista (que também é um Iterable)
+        return new ResponseEntity<>(pessoasDTO, HttpStatus.OK);
     }
 
-    public Iterable<PessoaModel> buscarTodasPessoas() {
-        return pessoaRepository.findAll();
+    public ResponseEntity<PessoaModel> atualizarPessoa(PessoaModel pessoaModel) {
+        if (!pessoaRepository.existsById(pessoaModel.getId())) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        PessoaModel atualizado = pessoaRepository.save(pessoaModel);
+        return new ResponseEntity<>(atualizado, HttpStatus.OK);
     }
 
-    public PessoaModel atualizarPessoa(PessoaModel pessoaModel) {
-        return pessoaRepository.save(pessoaModel);
+    public ResponseEntity<PessoaModel> buscaPessoaPorId(Long id) {
+        // Criar um obj do tipo Optional que recebe o PessoaModelo via findById
+        Optional<PessoaModel> obj = pessoaRepository.findById(id);
+
+        if (obj.isPresent()) {
+            // Converter Optional para PessoaModelo
+            return new ResponseEntity<>(obj.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public Optional<PessoaModel> buscarPessoaPorId(Long id) {
-        return pessoaRepository.findById(id);
-    }
-
-    public Optional<PessoaModel> atualizacaoParcial(Long id, PessoaModel pessoaModel) {
+    public ResponseEntity<PessoaModel> atualizacaoParcial(Long id, PessoaModel pessoaModel) {
         Optional<PessoaModel> pessoaModelOptional = pessoaRepository.findById(id);
         if (pessoaModelOptional.isEmpty()) {
-            return Optional.empty();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         PessoaModel pessoaExistente = pessoaModelOptional.get();
@@ -46,31 +68,16 @@ public class PessoaService {
         if (pessoaModel.getIdade() != null) {
             pessoaExistente.setIdade(pessoaModel.getIdade());
         }
-        // Outros campos que quiser atualizar...
 
         PessoaModel atualizado = pessoaRepository.save(pessoaExistente);
-        return Optional.of(atualizado);
+        return new ResponseEntity<>(atualizado, HttpStatus.OK);
     }
 
-    public boolean deletarPessoa(Long idPessoa) {
+    public ResponseEntity<Void> deletarPessoa(Long idPessoa) {
         if (pessoaRepository.existsById(idPessoa)) {
             pessoaRepository.deleteById(idPessoa);
-            return true;
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return false;
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    //metodo para estar as funcionalidades implementadas no repositorio
-    public Iterable<PessoaModel> teste(String cidade) {
-        return pessoaRepository.findByCidade(cidade);
-    }
-    public Iterable<PessoaModel> teste1(String cidade1, String cidade2){
-        return pessoaRepository.findByCidadeOrCidade(cidade1, cidade2);
-    }
-    public Iterable<PessoaModel> teste2(Integer idade){
-        return pessoaRepository.findByGreaterThanEqual(idade);
-    }
-    public Iterable<PessoaModel> teste3(Integer idade1, Integer idade2){
-        return pessoaRepository.findByIdadeBetween(idade1, idade2);
-    }
-
 }

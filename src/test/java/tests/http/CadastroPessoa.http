@@ -4,10 +4,10 @@ POST http://localhost:8080/api/pessoas
 Content-Type: application/json
 
 {
-  "nome": "Ana Maria",
+  "nome": "Maria",
   "email": "teste@teste.com",
-  "cidade": "Goiania",
-  "idade": 56
+  "cidade": "Rio de Janeiro",
+  "idade": 35
 }
 
 ###
@@ -15,7 +15,7 @@ GET http://localhost:8080/api/pessoas
 Content-Type: application/json
 
 ###
-GET http://localhost:8080/api/testes
+GET http://localhost:8080/api/pessoas/1
 Content-Type: application/json
 
 ###
