@@ -56,6 +56,18 @@ public class PessoaController {
         return pessoaService.teste("São Paulo");
     }
 
+       @GetMapping("/teste")
+    public Iterable<PessoaModel> teste1(){
+        return pessoaService.teste1("rio de janeiro", "Sao Paulo");
+    }
+    @GetMapping("/idade")
+    public Iterable<PessoaModel> idade(){
+        return pessoaService.teste2(30);
+    }
+    @GetMapping("/between")
+    public Iterable<PessoaModel>between(){
+        return pessoaService.teste3(20, 40);
+    }
     @DeleteMapping("/pessoas/{id}")
     public ResponseEntity<Void> deletarPessoa(@PathVariable Long id) {
         boolean deletou = pessoaService.deletarPessoa(id);
@@ -65,4 +77,5 @@ public class PessoaController {
             return ResponseEntity.notFound().build();
         }
     }
+ 
 }

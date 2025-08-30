@@ -63,4 +63,14 @@ public class PessoaService {
     public Iterable<PessoaModel> teste(String cidade) {
         return pessoaRepository.findByCidade(cidade);
     }
+    public Iterable<PessoaModel> teste1(String cidade1, String cidade2){
+        return pessoaRepository.findByCidadeOrCidade(cidade1, cidade2);
+    }
+    public Iterable<PessoaModel> teste2(Integer idade){
+        return pessoaRepository.findByGreaterThanEqual(idade);
+    }
+    public Iterable<PessoaModel> teste3(Integer idade1, Integer idade2){
+        return pessoaRepository.findByIdadeBetween(idade1, idade2);
+    }
+
 }
